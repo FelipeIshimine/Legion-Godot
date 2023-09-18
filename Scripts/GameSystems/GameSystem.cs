@@ -1,15 +1,12 @@
 using Godot;
-using System;
 
-public partial class GameSystem : Node
+namespace Legion.Scripts.GameSystems;
+
+public abstract partial class GameSystem : Node
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+	internal void Initialize() => OnInitialize();
+	internal void Terminate() => OnTerminate();
+	
+	protected abstract void OnInitialize();
+	protected abstract void OnTerminate();
 }

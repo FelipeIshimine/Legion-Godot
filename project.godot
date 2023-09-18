@@ -19,7 +19,7 @@ config/icon="res://icon.svg"
 
 GdTaskPlayerLoopAutoload="*res://addons/GDTask/Autoload/GDTaskPlayerLoopAutoload.cs"
 DataManager="*res://Scripts/Data/DataManager.cs"
-GameFlow="*res://Scripts/GameStates/GameFlow.cs"
+GameFlowMachine="*res://Scripts/GameStates/GameFlowMachine.cs"
 
 [dotnet]
 

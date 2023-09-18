@@ -1,47 +1,54 @@
 [gd_scene load_steps=2 format=3 uid="uid://difrx6p441uwp"]
 
-[ext_resource type="Script" path="res://Scripts/GameStates/MainGameFlowState.cs" id="1_l5sfa"]
+[ext_resource type="Script" path="res://Scripts/GameStates/MainGameCanvas.cs" id="1_8ay25"]
 
-[node name="MainGame" type="Node3D" node_paths=PackedStringArray("quitBtn", "restartBtn", "menuBtn")]
-script = ExtResource("1_l5sfa")
-quitBtn = NodePath("CanvasLayer/PanelContainer/VBoxContainer/Quit")
-restartBtn = NodePath("CanvasLayer/PanelContainer/VBoxContainer/Restart")
-menuBtn = NodePath("CanvasLayer/PanelContainer/VBoxContainer/Menu")
+[node name="MainGame" type="Node3D"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="MainGameCanvas" type="CanvasLayer" parent="." node_paths=PackedStringArray("quitBtn", "restartBtn", "menuBtn", "testCombatBtn")]
+script = ExtResource("1_8ay25")
+quitBtn = NodePath("PanelContainer/VBoxContainer/Quit")
+restartBtn = NodePath("PanelContainer/VBoxContainer/Restart")
+menuBtn = NodePath("PanelContainer/VBoxContainer/Menu")
+testCombatBtn = NodePath("PanelContainer/VBoxContainer/Test Combat")
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+[node name="PanelContainer" type="PanelContainer" parent="MainGameCanvas"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainGameCanvas/PanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainGameCanvas/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 80
 text = "Main Game"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Restart" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer"]
+[node name="Restart" type="Button" parent="MainGameCanvas/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "Restart"
 
-[node name="Menu" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer"]
+[node name="Test Combat" type="Button" parent="MainGameCanvas/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Test Combat
+"
+
+[node name="Menu" type="Button" parent="MainGameCanvas/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "Menu"
 
-[node name="Quit" type="Button" parent="CanvasLayer/PanelContainer/VBoxContainer"]
+[node name="Quit" type="Button" parent="MainGameCanvas/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Quit"

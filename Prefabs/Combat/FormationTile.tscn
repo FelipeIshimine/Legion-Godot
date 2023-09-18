@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dc4a1jrigcn5a"]
+
+[ext_resource type="Script" path="res://Scripts/Combat/Formation/FormationTile.cs" id="1_th2rp"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_l0oxd"]
+
+[node name="(0, 0)" type="Node3D"]
+script = ExtResource("1_th2rp")
+coordinate = Vector2i(0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 1, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("PlaneMesh_l0oxd")

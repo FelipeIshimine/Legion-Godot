@@ -1,43 +1,62 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
 using Extensions.Godot;
 using Fractural.Tasks;
 using Godot;
+using CombatFlow = Legion.Combat.CombatFlow;
 
-namespace Legion.GameFlow;
+namespace Legion.GameStates;
 
-public partial class MainGameFlowState : FlowState<MainGameFlowState, MainGameFlowState.Result>
+public partial class MainGameFlowState : GameFlowState<MainGameFlowState, MainGameFlowState.Result>
 {
-    [Export] private Button quitBtn; 
-    [Export] private Button restartBtn; 
-    [Export] private Button menuBtn; 
-    [Export] private Button testCombatBtn; 
-    
-    public enum Result
+	public readonly bool NewGame;
+
+	public MainGameFlowState(Node parent, bool newGame) : base(parent)
+	{
+		NewGame = newGame;
+	}
+
+	protected override async GDTask<Result> OnFlow(CancellationToken cancellationToken)
+    {
+	    if (!NewGame)
+	    {
+		    GD.Print("Continue. Loading...");
+		    await GDTask.Delay(500, DelayType.DeltaTime, PlayerLoopTiming.Process, cancellationToken);
+	    }
+        
+	    //Main Game Scene Load
+	    var mainGameScene = ResourceLoader.Load<PackedScene>(GameScenes.Instance.MainGame).Instantiate();
+	    Root.AddChild(mainGameScene);
+	    var mainGameCanvas = mainGameScene.FindNode<MainGameCanvas>();
+
+	    //Canvas 
+	    var canvasResult = await mainGameCanvas.Flow(cancellationToken);
+	    
+	    //Unload Scene
+        Root.RemoveChild(mainGameScene);
+        mainGameScene.QueueFree();
+
+        //Next Flow
+        if (canvasResult == MainGameCanvas.Result.Combat)
+        {
+	        await TestCombatFlow(cancellationToken);
+	        return Result.Menu;
+        }
+
+        return (Result)canvasResult;
+    }
+
+	private async GDTask TestCombatFlow(CancellationToken cancellationToken)
+    {
+	    CombatFlow.Result result = await new CombatFlow(this).Flow(cancellationToken);
+	    
+	    GD.Print($"Combat Result: {result}");
+	    
+    }
+
+	public enum Result
     {
         Quit = 0,
         Restart = 1,
         Menu = 2,
-    }
-
-    protected override async GDTask<Result> OnFlow(CancellationToken cancellationToken)
-    {
-        CancellationTokenSource cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        var resultIndex = await new[] { quitBtn, restartBtn, menuBtn, testCombatBtn}.WaitForButtonUp(cancellationTokenSource.Token);
-        cancellationTokenSource.Cancel();
-
-        if (resultIndex < 3)
-        {
-            return (Result)resultIndex;
-        }
-
-        await TestCombatFlow(cancellationToken); 
-        
-        return Result.Menu;
-    }
-
-    private async GDTask TestCombatFlow(CancellationToken cancellationToken)
-    {
-        ResourceLoader.Load<PackedScene>()
     }
 }
