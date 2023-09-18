@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cthtdhntt71c0"]
+
+[ext_resource type="Script" path="res://Scripts/GameScenes.cs" id="5_p6h3l"]
+
+[resource]
+script = ExtResource("5_p6h3l")
+Combat = "res://Scenes/Combat.tscn"
+MainGame = "res://Scenes/MainGame.tscn"
+Shop = "res://Scenes/Shop.tscn"
+MainMenu = "res://Scenes/MainMenu.tscn"
