@@ -30,7 +30,7 @@ public partial class GameSystemsContainer : Node
         systems = CollectSystems().ToArray();
     }
 
-	protected T GetSystem<T>() where T : Scripts.GameSystems.GameSystem => Array.Find(systems, x => x is T) as T;
+	public T GetSystem<T>() where T : Scripts.GameSystems.GameSystem => Array.Find(systems, x => x is T) as T;
 
 	IEnumerable<Scripts.GameSystems.GameSystem> CollectSystems()
     {

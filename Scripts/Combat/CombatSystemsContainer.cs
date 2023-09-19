@@ -1,30 +1,31 @@
-using Godot;
-using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Fractural.Tasks;
+using Godot;
 using Legion.Character;
 using Legion.GameSystems;
-using Legion.Scripts.Combat;
-using Legion.Scripts.Combat.Formation;
+
+namespace Legion.Combat;
 
 public partial class CombatSystemsContainer : GameSystemsContainer
 {
-	public async GDTask CombatFlow(CombatConfiguration configuration, CancellationToken cancellationToken)
+	public CombatConfiguration Configuration { get; private set; }
+	
+	public async GDTask CombatFlow(CombatConfiguration combatConfig, CancellationToken cancellationToken)
 	{
+		Configuration = combatConfig;
 		GD.Print("AAA");
-		var formationSystem = GetSystem<FormationSystem>();
+		var formationSystem = GetSystem<Formation.FormationSystem>();
 
-		foreach (var unit in configuration.Units())
+		foreach (var unit in combatConfig.Units())
 		{
 			AddChild(unit);
 		}
 		
-		LoadTeam(configuration.LeftTeam, formationSystem.LeftFormation);
-		LoadTeam(configuration.RightTeam, formationSystem.RightFormation);
+		LoadTeam(combatConfig.LeftTeam, formationSystem.LeftFormation);
+		LoadTeam(combatConfig.RightTeam, formationSystem.RightFormation);
 
-		foreach (CharacterUnit unit in configuration.RightTeam)
+		foreach (CharacterUnit unit in combatConfig.RightTeam)
 		{
 			unit.Flip();
 		}
@@ -37,12 +38,13 @@ public partial class CombatSystemsContainer : GameSystemsContainer
 		}
 	}
 
-	private static void LoadTeam(CharacterUnit[] team, Formation formation)
+	private static void LoadTeam(CharacterUnit[] team, Formation.Formation formation)
 	{
 		for (var index = 0; index < team.Length; index++)
 		{
 			CharacterUnit unit = team[index];
 			unit.GlobalPosition = formation[index].GlobalPosition;
+			unit.SetTile(formation[index]);
 		}
 	}
 }

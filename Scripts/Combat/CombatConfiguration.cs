@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Godot;
 
-namespace Legion.Scripts.Combat;
+namespace Legion.Combat;
 
 public class CombatConfiguration
 {

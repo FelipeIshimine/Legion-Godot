@@ -1,6 +1,7 @@
 ﻿using Godot;
+using Legion.Character;
 
-namespace Legion.Scripts.Combat.Formation;
+namespace Legion.Combat.Formation;
 
 [GlobalClass,Tool]
 public partial class FormationTile : Node3D
@@ -15,4 +16,7 @@ public partial class FormationTile : Node3D
 			Name = coordinate.ToString();
 		}
 	}
+
+	public CharacterUnit Unit { get; set; }
+	public bool IsEmpty => Unit == null;
 }

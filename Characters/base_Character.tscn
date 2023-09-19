@@ -46,7 +46,7 @@ sprite = NodePath("Sprite3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 offset = Vector2(0, 16)
-pixel_size = 0.1
+pixel_size = 0.075
 texture_filter = 0
 texture = ExtResource("2_8hmjn")
 hframes = 10

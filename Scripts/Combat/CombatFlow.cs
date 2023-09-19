@@ -4,7 +4,6 @@ using Extensions.Godot;
 using Fractural.Tasks;
 using Godot;
 using Legion.Character;
-using Legion.Scripts.Combat;
 
 namespace Legion.Combat;
 
