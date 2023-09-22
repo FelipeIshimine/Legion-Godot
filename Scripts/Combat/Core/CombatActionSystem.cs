@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Fractural.Tasks;
@@ -9,6 +10,8 @@ namespace Legion.Combat.Core;
 
 public partial class CombatActionSystem : GameSystem
 {
+	public static event Action<CombatActionSystem> OnExecutionTreeUpdate; 
+	
 	[Export] private Dictionary<CombatAction, CombatAction> executionTree = new Dictionary<CombatAction, CombatAction>();
 
 	public Dictionary<CombatAction, CombatAction> ExecutionTree => executionTree;
@@ -25,13 +28,14 @@ public partial class CombatActionSystem : GameSystem
 		cts.Cancel();
 	}
 
-	public async GDTask Execute<T>(T combatAction, CombatAction parent, CancellationToken token) where T : CombatAction<T>
+	public async GDTask Execute(CombatAction combatAction, CombatAction parent, CancellationToken token)
 	{
 		if (parent == null)
 		{
 			GD.Print($"Sequence Start {combatAction}");
 		}
 		executionTree.Add(combatAction,parent);
+		OnExecutionTreeUpdate?.Invoke(this);
 		
 		token = CancellationTokenSource.CreateLinkedTokenSource(token, cts.Token).Token;
 		bool canPerform = await Prepare(combatAction, token);
@@ -42,6 +46,7 @@ public partial class CombatActionSystem : GameSystem
 		}
 		
 		executionTree.Remove(combatAction);
+		OnExecutionTreeUpdate?.Invoke(this);
 
 		if (parent == null)
 		{
@@ -49,9 +54,11 @@ public partial class CombatActionSystem : GameSystem
 		}
 	}
 
-	private async Task Perform<T>(T combatAction, CancellationToken token) where T : CombatAction<T>
+	private async Task Perform(CombatAction combatAction, CancellationToken token)
 	{
-		PerformNotification notification = combatAction.NotificatePerform();
+		GD.Print($"Perform:{combatAction}");
+
+		PerformNotification notification = combatAction.EmitPerformNotification();
 
 		await combatAction.Perform(token);
 		
@@ -61,10 +68,11 @@ public partial class CombatActionSystem : GameSystem
 		}
 	}
 
-	private async GDTask<bool> Prepare<T>(T combatAction, CancellationToken cancellationToken) where T : CombatAction<T>
+	private async GDTask<bool> Prepare(CombatAction combatAction, CancellationToken cancellationToken)
 	{
+		GD.Print($"Prepare:{combatAction}");
 		await combatAction.Prepare(cancellationToken);
-		PrepareNotification notification = combatAction.NotificatePrepare();
+		PrepareNotification notification = combatAction.EmitPrepareNotification();
 
 		foreach (var reaction in notification.Reactions)
 		{

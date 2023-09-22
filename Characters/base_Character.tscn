@@ -1,7 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://d03yfdd0npn0m"]
+[gd_scene load_steps=9 format=3 uid="uid://d03yfdd0npn0m"]
 
 [ext_resource type="Script" path="res://Scripts/Character/CharacterUnit.cs" id="1_io455"]
 [ext_resource type="Texture2D" uid="uid://bbn8ef5w2kpwv" path="res://2D/Sprites/Characters/Character Idle 48x48.png" id="2_8hmjn"]
+[ext_resource type="Script" path="res://Scripts/Combat/SkillsController.cs" id="3_cgb05"]
+[ext_resource type="PackedScene" uid="uid://ce22wd58fyy5u" path="res://Skills/ActiveSkills/SwapSkill.tscn" id="4_rakcd"]
+[ext_resource type="Script" path="res://Scripts/Character/RandomController.cs" id="5_m6738"]
 
 [sub_resource type="Animation" id="Animation_nwsrt"]
 resource_name = "Idle"
@@ -40,9 +43,11 @@ _data = {
 "RESET": SubResource("Animation_vcoka")
 }
 
-[node name="BaseCharacter" type="Node3D" node_paths=PackedStringArray("sprite")]
+[node name="BaseCharacter" type="Node3D" node_paths=PackedStringArray("sprite", "Skills", "Controller")]
 script = ExtResource("1_io455")
 sprite = NodePath("Sprite3D")
+Skills = NodePath("SkillsController")
+Controller = NodePath("Controller")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 offset = Vector2(0, 16)
@@ -57,3 +62,13 @@ autoplay = "Idle"
 libraries = {
 "": SubResource("AnimationLibrary_qtdka")
 }
+
+[node name="Controller" type="Node" parent="."]
+script = ExtResource("5_m6738")
+
+[node name="SkillsController" type="Node" parent="." node_paths=PackedStringArray("ActiveSkills", "PassiveSkill")]
+script = ExtResource("3_cgb05")
+ActiveSkills = []
+PassiveSkill = []
+
+[node name="SwapSkill" parent="SkillsController" instance=ExtResource("4_rakcd")]

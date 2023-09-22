@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System.Collections.Generic;
+using Godot;
 
 namespace Extensions.Godot;
 
@@ -22,6 +23,14 @@ public static class NodeExtensions
 				return childT;
 		}
 		return default;
+	}
+	public static IEnumerable<T> FindNodes<T>(this Node node) where T : Node
+	{
+		foreach (Node child in node.GetChildren())
+		{
+			if (child is T childT)
+				yield return childT;
+		}
 	}
 	
 }

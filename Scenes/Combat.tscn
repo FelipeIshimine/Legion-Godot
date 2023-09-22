@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5be8i3ca6suv"]
+[gd_scene load_steps=7 format=3 uid="uid://c5be8i3ca6suv"]
 
 [ext_resource type="Script" path="res://Scripts/Combat/CombatSystemsContainer.cs" id="2_fq03y"]
 [ext_resource type="Script" path="res://Scripts/Combat/Formation/FormationSystem.cs" id="3_2gviq"]
 [ext_resource type="Script" path="res://Scripts/Combat/Formation/Formation.cs" id="4_bv07j"]
+[ext_resource type="Script" path="res://Scripts/Combat/Core/CombatActionSystem.cs" id="5_1uvyx"]
 [ext_resource type="PackedScene" uid="uid://dc4a1jrigcn5a" path="res://Prefabs/Combat/FormationTile.tscn" id="5_kue7i"]
+[ext_resource type="Script" path="res://Scripts/Combat/Turn/TurnsSystem.cs" id="6_hjon6"]
 
 [node name="Combat" type="Node3D"]
 
@@ -54,6 +56,13 @@ Coordinate = Vector2i(0, 1)
 [node name="(1, 1)" parent="CombatSystemsContainer/FormationSystem/Right Formation" instance=ExtResource("5_kue7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1)
 Coordinate = Vector2i(1, 1)
+
+[node name="CombatActionSytem" type="Node" parent="CombatSystemsContainer"]
+script = ExtResource("5_1uvyx")
+executionTree = null
+
+[node name="TurnSystem" type="Node" parent="CombatSystemsContainer"]
+script = ExtResource("6_hjon6")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 8, 10)

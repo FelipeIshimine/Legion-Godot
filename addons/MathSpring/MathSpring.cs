@@ -1,6 +1,8 @@
-﻿namespace Legion.addons.MathSpring;
+﻿using Godot;
 
-public class MathSpring
+namespace Legion.addons.MathSpring;
+
+public static class MathSpring
 {
     /*
   x     - value             (input/output)
@@ -10,20 +12,22 @@ public class MathSpring
   omega - angular frequency (input)
   h     - time step         (input)
 */
-    void Spring
-    (
-        float x, float v, float xt, 
-    float zeta, float omega, float h
-    )
+    public static void Spring(ref float value,ref float velocity, float targetValue, float dampingRatio, float angularFrequency, float timeStep)
     {
-        float f = 1.0f + 2.0f * h * zeta * omega;
-        float oo = omega     * omega;
-        float hoo = h        * oo;
-        float hhoo = h       * hoo;
+        float f = 1.0f + 2.0f * timeStep * dampingRatio * angularFrequency;
+        float oo = angularFrequency     * angularFrequency;
+        float hoo = timeStep        * oo;
+        float hhoo = timeStep       * hoo;
         float detInv = 1.0f  / (f + hhoo);
-        float detX = f * x + h   * v + hhoo * xt;
-        float detV = v     + hoo * (xt - x);
-        x = detX * detInv;
-        v = detV * detInv;
+        float detX = f * value + timeStep   * velocity + hhoo * targetValue;
+        float detV = velocity     + hoo * (targetValue - value);
+        value = detX * detInv;
+        velocity = detV * detInv;
+    }
+    
+    public static void Spring(ref Vector2 value,ref Vector2 velocity, Vector2 targetValue, float dampingRatio, float angularFrequency, float timeStep)
+    {
+	    Spring(ref value.X, ref velocity.X, targetValue.X, dampingRatio, angularFrequency, timeStep);
+	    Spring(ref value.Y, ref velocity.Y, targetValue.Y, dampingRatio, angularFrequency, timeStep);
     }
 }

@@ -1,35 +1,61 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using Fractural.Tasks;
 using Godot;
 using Legion.Character;
 using Legion.Combat.Core;
 using Legion.Combat.Formation;
+using Time = Legion.GameStates.Time;
 
 namespace Legion.Combat.CombatActions;
 
-public class SwapCombatAction : CombatAction<SwapCombatAction, SwapCombatAction.Settings>
+public partial class SwapCombatAction : CombatAction<SwapCombatAction, SwapCombatActionSettings>
 {
-	public class Settings : GodotObject
-	{
-		public float Speed = 10;
-		public Curve Curve;
-	}
-
+	private FormationSystem formationSystem;
 	protected override GDTask PerformFlow(CancellationToken cancellationToken) => GDTask.CompletedTask;
 
-	protected override GDTask PrepareFlow(CancellationToken cancellationToken)
+	protected override async GDTask PrepareFlow(CancellationToken token)
 	{
-		var formationSystem = GetSystem<FormationSystem>();
+		formationSystem = GetSystem<FormationSystem>();
 		
-		var coorA = Targets[0];
-		var coorB = Targets[1];
+		var sourceCoordinate = Targets[0];
+		var targetCoordinate = Targets[1];
 
-		CharacterUnit unit = formationSystem[coorA].Unit;
+		FormationTile sourceTile = formationSystem[sourceCoordinate];
+		FormationTile targetTile = formationSystem[targetCoordinate];
 
-		var sourceTile = formationSystem[coorA];
-		var targetTile = formationSystem[coorB];
+		List<GDTask> tasks = new List<GDTask>();
+
+		if (!sourceTile.IsEmpty)
+		{
+			tasks.Add(UnitTransition(sourceTile.Unit, targetCoordinate, token));	
+		}
+		if (!targetTile.IsEmpty)
+		{
+			tasks.Add(UnitTransition(targetTile.Unit, sourceCoordinate, token));	
+		}
+
+		await GDTask.WhenAll(tasks);
+	}
+
+	private async GDTask UnitTransition(CharacterUnit unit, Vector3I coordinate, CancellationToken token)
+	{
+		var targetTile = formationSystem[coordinate];
+
+		var targetPosition = targetTile.GlobalPosition;
+
+		var speed = MySettings.Speed;
+
+		var startDistance = (targetPosition - unit.GlobalPosition).LengthSquared();
 		
-		if(sourceTile)
+		do
+		{
+			float t = (targetPosition - unit.GlobalPosition).LengthSquared() / startDistance;
+			var delta = speed * Time.Delta * MySettings.Curve.Sample(t);
+			unit.GlobalPosition = unit.GlobalPosition.MoveToward(targetPosition, delta);
+			await GDTask.NextFrame(PlayerLoopTiming.Process, token);
+		} while (unit.GlobalPosition != targetPosition);
 		
+		unit.SetTile(formationSystem.Tiles[coordinate]);
 	}
 }

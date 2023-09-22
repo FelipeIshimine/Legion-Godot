@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Extensions.Godot;
 using Fractural.Tasks;
 using Godot;
+using Legion.Data;
 using Legion.MainMenu;
 
 namespace Legion.GameStates;
@@ -13,6 +14,12 @@ public partial class GameFlowMachine : Node
 {
 	public override async void _Ready()
     {
+	    if (GetTree().CurrentScene.Name != "Root")
+	    {
+		    GD.Print($"{GetTree().CurrentScene.Name} is not main scene. Flow Aborted");
+		    return;
+	    }
+	    
         var destroyToken = this.GetCancellationTokenOnDestroy();
         await GDTask.NextFrame(destroyToken);
 
@@ -79,4 +86,20 @@ public partial class GameFlowMachine : Node
 
         return menuResult;
     }
+
+	public override void _Process(double delta)
+	{
+		Time.Delta = (float)delta;
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		Time.PhysicsDelta = (float)delta;
+	}
+}
+
+public static class Time
+{
+	public static float Delta { get; internal set; }
+	public static float PhysicsDelta { get; internal set; }
 }

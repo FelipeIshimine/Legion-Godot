@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/GameStates/MainGameCanvas.cs" id="1_8ay25"]
 
-[node name="MainGame" type="Node3D"]
+[node name="MainGame" type="Node2D"]
 
 [node name="MainGameCanvas" type="CanvasLayer" parent="." node_paths=PackedStringArray("quitBtn", "restartBtn", "menuBtn", "testCombatBtn")]
 script = ExtResource("1_8ay25")

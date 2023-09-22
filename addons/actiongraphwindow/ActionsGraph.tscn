@@ -1,0 +1,83 @@
+[gd_scene load_steps=4 format=3 uid="uid://dliushfld8px1"]
+
+[ext_resource type="Script" path="res://addons/actiongraphwindow/Scripts/CombatActionGraph.cs" id="1_oyhr3"]
+[ext_resource type="PackedScene" uid="uid://cusul4asyrr0f" path="res://addons/actiongraphwindow/ActionGraphNode.tscn" id="2_wolqe"]
+[ext_resource type="Script" path="res://addons/actiongraphwindow/Scripts/ConnectNodesBtn.cs" id="3_prn07"]
+
+[node name="Combat Actions Graph" type="Control" node_paths=PackedStringArray("btn", "removeBtn", "graphEdit", "connectBtn")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oyhr3")
+btn = NodePath("Bar/AddBtn")
+removeBtn = NodePath("Bar/HBoxContainer/RemoveBtn")
+graphEdit = NodePath("GraphEdit")
+nodeScn = ExtResource("2_wolqe")
+connectBtn = NodePath("Bar/ConnectBtn")
+nodesSeparation = Vector2(200, 100)
+
+[node name="Bar" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 20
+
+[node name="AddBtn" type="Button" parent="Bar"]
+layout_mode = 2
+text = "ADD NODE"
+
+[node name="ConnectBtn" type="HBoxContainer" parent="Bar"]
+layout_mode = 2
+script = ExtResource("3_prn07")
+
+[node name="Button2" type="Button" parent="Bar/ConnectBtn"]
+layout_mode = 2
+text = "Connect"
+
+[node name="Container" type="Container" parent="Bar/ConnectBtn"]
+custom_minimum_size = Vector2(100, 0)
+layout_direction = 1
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="From" type="LineEdit" parent="Bar/ConnectBtn/Container"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+placeholder_text = "From"
+
+[node name="Label" type="Label" parent="Bar/ConnectBtn"]
+visible = false
+layout_mode = 2
+text = "With"
+
+[node name="Container2" type="Container" parent="Bar/ConnectBtn"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="To" type="LineEdit" parent="Bar/ConnectBtn/Container2"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "To"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Bar"]
+layout_mode = 2
+
+[node name="RemoveBtn" type="Button" parent="Bar/HBoxContainer"]
+layout_mode = 2
+text = "Remove"
+
+[node name="GraphEdit" type="GraphEdit" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+right_disconnects = true

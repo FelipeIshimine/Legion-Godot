@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Fractural.Tasks;
 using Godot;
+using Legion.Data;
 
 namespace Legion.GameStates;
 

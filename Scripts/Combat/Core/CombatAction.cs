@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Fractural.Tasks;
@@ -16,6 +15,10 @@ public abstract partial class CombatAction : Node
 	public Vector3I[] Targets;
 	public string DisplayName;
 
+	private static int idCount;
+
+	public readonly int ID = idCount++;
+
 	protected T GetSystem<T>() where T : GameSystem => SystemsContainer.GetSystem<T>();
 	
 	public async GDTask Perform(CancellationToken cancellationToken)
@@ -27,57 +30,15 @@ public abstract partial class CombatAction : Node
 
 	public async Task Prepare(CancellationToken cancellationToken)
 	{
+		GD.Print($"Prepare:{this} START");
 		await PrepareFlow(cancellationToken);
+		GD.Print($"Prepare:{this} END");
 	}
 	
-	protected abstract GDTask PrepareFlow(CancellationToken cancellationToken);
+	protected abstract GDTask PrepareFlow(CancellationToken token);
 
-	
-}
-
-
-public class PrepareNotification
-{
-	public readonly CombatAction Value;
-	public List<GDTask> Reactions = new List<GDTask>();
-
-	public PrepareNotification(CombatAction value)
-	{
-		Value = value;
-	}
-
-	public bool WasCanceled { get; private set; }
-	public void Cancel()
-	{
-		WasCanceled = true;
-	}
-}
-
-public class PrepareNotification<T> : PrepareNotification where T : CombatAction<T>
-{
-	public T Action => (T)Value;
-	public PrepareNotification(T value) : base(value)
-	{
-	}
-}
-
-public class PerformNotification
-{
-	public readonly CombatAction Value;
-	public List<GDTask> Reactions = new List<GDTask>();
-
-	public PerformNotification(CombatAction value)
-	{
-		Value = value;
-	}
-}
-
-public class PerformNotification<T> : PerformNotification where T : CombatAction<T>
-{
-	public T Action => (T)Value;
-	public PerformNotification(T value) : base(value)
-	{
-	}
+	public abstract PrepareNotification EmitPrepareNotification();
+	public abstract PerformNotification EmitPerformNotification();
 }
 
 
@@ -87,14 +48,14 @@ public abstract partial class CombatAction<T> : CombatAction where T : CombatAct
 	public static event Action<PrepareNotification<T>> OnPrepare;
 	public static event Action<PerformNotification> OnPerform;
 	
-	public PrepareNotification<T> NotificatePrepare()
+	public override PrepareNotification EmitPrepareNotification()
 	{
 		PrepareNotification<T> notification = new PrepareNotification<T>((T)this);
 		OnPrepare?.Invoke(notification);
 		return notification;
 	}
 	
-	public PerformNotification NotificatePerform()
+	public override PerformNotification EmitPerformNotification()
 	{
 		PerformNotification<T> notification = new PerformNotification<T>((T)this);
 		OnPerform?.Invoke(notification);

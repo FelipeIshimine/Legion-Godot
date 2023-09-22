@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/MainMenu/MainMenuCanvas.cs" id="1_ga0sr"]
 
-[node name="MainMenu" type="Node3D"]
+[node name="MainMenu" type="Node2D"]
 
 [node name="MainMenuCanvas" type="CanvasLayer" parent="." node_paths=PackedStringArray("continueBtn", "newGameBtn", "quitBtn")]
 script = ExtResource("1_ga0sr")

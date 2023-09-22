@@ -18,7 +18,7 @@ public class CombatConfiguration
 		this.RightTeam = rightTeam;
 	}
 
-	public IEnumerable<Character.CharacterUnit> Units()
+	public IEnumerable<Character.CharacterUnit> AllUnits()
 	{
 		foreach (Character.CharacterUnit unit in LeftTeam)
 		{

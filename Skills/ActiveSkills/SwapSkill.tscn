@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://ce22wd58fyy5u"]
+
+[ext_resource type="Script" path="res://Scripts/Combat/CombatSkills/SwapSkill.cs" id="1_8o011"]
+[ext_resource type="Script" path="res://Scripts/Combat/CombatActions/SwapCombatActionSettings.cs" id="2_lkd32"]
+
+[sub_resource type="Curve" id="Curve_blfdi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.463158), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_apcjk"]
+script = ExtResource("2_lkd32")
+Speed = 10.0
+Curve = SubResource("Curve_blfdi")
+
+[node name="SwapSkill" type="Node"]
+script = ExtResource("1_8o011")
+SkillSettings = SubResource("Resource_apcjk")

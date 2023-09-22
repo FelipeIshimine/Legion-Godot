@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bab6m3qh5qs03"]
+
+[ext_resource type="Script" path="res://Scripts/Combat/CombatSkills/SwapSkill.cs" id="1_epc6j"]
+[ext_resource type="Script" path="res://Scripts/Combat/CombatActions/SwapCombatActionSettings.cs" id="2_wj2bb"]
+
+[node name="Test" type="Node2D"]
+
+[node name="SwapSkill" type="Node" parent="."]
+script = ExtResource("1_epc6j")
+
+[node name="SwapSkill" type="Node" parent="SwapSkill"]
+script = ExtResource("1_epc6j")
+SkillSettings = Object(Node,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","script":ExtResource("2_wj2bb"),"Speed":10.0,"Curve":null)
+
+
+[node name="SwapCombatActionSettings" type="Node" parent="SwapSkill/SwapSkill"]
+script = ExtResource("2_wj2bb")

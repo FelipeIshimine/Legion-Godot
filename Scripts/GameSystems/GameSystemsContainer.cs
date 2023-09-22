@@ -1,18 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Extensions.Godot;
 using Godot;
+using Legion.Scripts.GameSystems;
 
 namespace Legion.GameSystems;
 
 public partial class GameSystemsContainer : Node
 {
-	[Export] private Scripts.GameSystems.GameSystem[] systems = new Scripts.GameSystems.GameSystem[0];
+	[Export] private Scripts.GameSystems.GameSystem[] systems = Array.Empty<GameSystem>();
 
 	public void Initialize()
 	{
+		systems = this.FindNodes<GameSystem>().ToArray();
+		
 		foreach (var gameSystem in systems)
 		{
+			GD.Print($"Initialize {gameSystem.Name}");
 			gameSystem.Initialize();
 		}
 	}
