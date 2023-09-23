@@ -18,12 +18,20 @@ public partial class FormationSystem : Legion.Scripts.GameSystems.GameSystem
 	{
 		foreach (var tile in LeftFormation.Tiles)
 		{
-			Tiles.Add(new Vector3I(tile.Coordinate.X,tile.Coordinate.Y,0), tile);
+			Tiles.Add(new Vector3I(tile.LocalCoordinate.X,tile.LocalCoordinate.Y,0), tile);
+			tile.WorldCoordinate = new Vector3I(
+				tile.LocalCoordinate.X,
+				tile.LocalCoordinate.Y,
+				0);
 		}
 		
 		foreach (var tile in RightFormation.Tiles)
 		{
-			Tiles.Add(new Vector3I(tile.Coordinate.X,tile.Coordinate.Y,1), tile);
+			Tiles.Add(new Vector3I(tile.LocalCoordinate.X,tile.LocalCoordinate.Y,1), tile);
+			tile.WorldCoordinate = new Vector3I(
+				tile.LocalCoordinate.X,
+				tile.LocalCoordinate.Y,
+				1);
 		}
 	}
 

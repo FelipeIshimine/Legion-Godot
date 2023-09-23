@@ -1,5 +1,6 @@
 using Extensions.Godot;
 using Godot;
+using Legion.Attributes;
 using FormationTile = Legion.Combat.Formation.FormationTile;
 
 namespace Legion.Character;
@@ -9,11 +10,14 @@ public partial class CharacterUnit : Node3D
 	[Export] private Sprite3D sprite;
 	[Export] public SkillsController Skills { get; set; }
 	[Export] public UnitController Controller { get; set; }
+	[Export] public AttributesNode Attributes { get; set; }
 
 	public bool LookingRight => !sprite.FlipH;
 
 	public FormationTile Tile { get; private set; }
-	public Vector2I Coordinate => Tile.Coordinate;
+	public Vector2I LocalCoordinate => Tile.LocalCoordinate;
+	public Vector3I WorldCoordinate => Tile.WorldCoordinate;
+	public int CurrentHealth { get; set; }
 
 	public void Flip() => sprite.FlipH = !sprite.FlipH;
 
@@ -42,4 +46,8 @@ public partial class CharacterUnit : Node3D
 				break;
 		}
 	}
+	
+
 }
+
+

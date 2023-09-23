@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://crxnasm47153y"]
+
+[ext_resource type="Script" path="res://Scripts/Attributes/MainAttributes/Wisdom.cs" id="1_b2qki"]
+[ext_resource type="Texture2D" uid="uid://cwibit7yw8x7w" path="res://2D/Sprites/Icons/Attributes/Main/Wisdom.png" id="1_h2ty0"]
+
+[resource]
+script = ExtResource("1_b2qki")
+Icon = ExtResource("1_h2ty0")
+Description = ""

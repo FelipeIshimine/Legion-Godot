@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://b0plmxxr2sq7a"]
+
+[ext_resource type="Script" path="res://Scripts/Attributes/MainAttributes/Intelligence.cs" id="1_5hht0"]
+[ext_resource type="Texture2D" uid="uid://lw47713e8mqe" path="res://2D/Sprites/Icons/Attributes/Main/Dexterity.png" id="1_ssep4"]
+
+[resource]
+script = ExtResource("1_5hht0")
+Icon = ExtResource("1_ssep4")
+Description = ""

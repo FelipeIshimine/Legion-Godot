@@ -13,7 +13,7 @@ public partial class GameSystemsContainer : Node
 
 	public void Initialize()
 	{
-		systems = this.FindNodes<GameSystem>().ToArray();
+		systems = this.FindNodesOfType<GameSystem>().ToArray();
 		
 		foreach (var gameSystem in systems)
 		{

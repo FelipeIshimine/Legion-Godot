@@ -16,7 +16,7 @@ public partial class quickreloadproject : EditorPlugin
 
 	public override void _Input(InputEvent input)
 	{
-		if (input is InputEventKey key && key.Pressed && key.CtrlPressed && key.ShiftPressed && key.Keycode == Key.F5)
+		if (input is InputEventKey key && key.Pressed && key.CtrlPressed && key.AltPressed && key.Keycode == Key.F5)
 		{
 			GetEditorInterface().RestartEditor(true);
 		}

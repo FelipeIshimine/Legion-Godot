@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Dexterity" load_steps=3 format=3 uid="uid://c726hulwornpi"]
+
+[ext_resource type="Texture2D" uid="uid://lw47713e8mqe" path="res://2D/Sprites/Icons/Attributes/Main/Dexterity.png" id="1_i6g5j"]
+[ext_resource type="Script" path="res://Scripts/Attributes/MainAttributes/Dexterity.cs" id="1_iurim"]
+
+[resource]
+script = ExtResource("1_iurim")
+Icon = ExtResource("1_i6g5j")
+Description = ""

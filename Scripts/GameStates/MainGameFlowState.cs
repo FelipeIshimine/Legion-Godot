@@ -26,8 +26,7 @@ public partial class MainGameFlowState : GameFlowState<MainGameFlowState, MainGa
 	    //Main Game Scene Load
 	    var mainGameScene = ResourceLoader.Load<PackedScene>(GameScenes.Instance.MainGame).Instantiate();
 	    Root.AddChild(mainGameScene);
-	    var mainGameCanvas = mainGameScene.FindNode<MainGameCanvas>();
-
+	    mainGameScene.TryFindNodeOfType<MainGameCanvas>(out MainGameCanvas mainGameCanvas);
 	    //Canvas 
 	    var canvasResult = await mainGameCanvas.Flow(cancellationToken);
 	    

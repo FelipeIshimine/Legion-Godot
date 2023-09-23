@@ -15,16 +15,22 @@ public static class NodeExtensions
 		return default;
 	}
 	
-	public static T FindNode<T>(this Node node) where T : Node
+	public static bool TryFindNodeOfType<T>(this Node node, out T result) where T : Node
 	{
+		if (node is T value)
+		{
+			result = value;
+			return true;
+		}
 		foreach (Node child in node.GetChildren())
 		{
-			if (child is T childT)
-				return childT;
+			if (child.TryFindNodeOfType<T>(out result))
+				return true;
 		}
-		return default;
+		result = null;
+		return false;
 	}
-	public static IEnumerable<T> FindNodes<T>(this Node node) where T : Node
+	public static IEnumerable<T> FindNodesOfType<T>(this Node node) where T : Node
 	{
 		foreach (Node child in node.GetChildren())
 		{

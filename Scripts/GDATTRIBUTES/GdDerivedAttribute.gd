@@ -1,0 +1,3 @@
+extends GdAttribute
+
+class_name GdDerivedAttribute

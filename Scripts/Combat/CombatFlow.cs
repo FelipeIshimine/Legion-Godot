@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Extensions.Godot;
@@ -43,9 +44,13 @@ public partial class CombatFlow : GameStates.GameFlowState<CombatFlow, CombatFlo
 		}
 		
 		CombatConfiguration combatConfiguration = new CombatConfiguration(allies.ToArray(),enemies.ToArray());
+
+		if (!combatScene.TryFindNodeOfType(out CombatSystemsContainer combatSystemsContainer))
+		{
+			throw new Exception($"{nameof(CombatSystemsContainer)} not found");
+		}
 		
-	
-		await combatScene.FindNode<CombatSystemsContainer>().CombatFlow(combatConfiguration,cancellationToken);
+		await combatSystemsContainer.CombatFlow(combatConfiguration,cancellationToken);
 
 		//ReleaseScene
 		Root.RemoveChild(combatScene);

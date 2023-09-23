@@ -18,8 +18,9 @@ config/icon="res://icon.svg"
 [autoload]
 
 GdTaskPlayerLoopAutoload="*res://addons/GDTask/Autoload/GDTaskPlayerLoopAutoload.cs"
-DataManager="res://Scripts/Data/DataManager.cs"
+DataManager="*res://Scripts/Data/DataManager.cs"
 GameFlowMachine="*res://Scripts/GameStates/GameFlowMachine.cs"
+AttributesTypes="*res://Scenes/Singletons/AttributesTypes.tscn"
 
 [display]
 
@@ -31,7 +32,7 @@ project/assembly_name="Legion"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/QuickPluginManager/plugin.cfg", "res://addons/quickreloadproject/plugin.cfg", "res://addons/scenesdropdownplugin/plugin.cfg")
+enabled=PackedStringArray("res://addons/QuickPluginManager/plugin.cfg", "res://addons/attributesautomationplugin/plugin.cfg", "res://addons/quickreloadproject/plugin.cfg", "res://addons/scenesdropdownplugin/plugin.cfg")
 
 [input]
 

@@ -12,6 +12,8 @@ namespace Legion.GameStates;
 
 public partial class GameFlowMachine : Node
 {
+	public static readonly RandomNumberGenerator Rng = new RandomNumberGenerator(); 
+
 	public override async void _Ready()
     {
 	    if (GetTree().CurrentScene.Name != "Root")
@@ -76,9 +78,10 @@ public partial class GameFlowMachine : Node
 	    var canvasScene = ResourceLoader.Load<PackedScene>(GameScenes.Instance.MainMenu).Instantiate();
 	    AddChild(canvasScene);
 
-	    MainMenuCanvas mainMenuCanvas = canvasScene.FindNode<MainMenuCanvas>();
-
+	    canvasScene.TryFindNodeOfType(out MainMenuCanvas mainMenuCanvas);
+	    
 	    mainMenuCanvas.ShowContinueButton(DataManager.Instance.HasSavedGame());
+	    
 	    MainMenuCanvas.Result menuResult = await mainMenuCanvas.Flow(cancellationToken);
 	    
 	    RemoveChild(canvasScene);
@@ -96,6 +99,7 @@ public partial class GameFlowMachine : Node
 	{
 		Time.PhysicsDelta = (float)delta;
 	}
+
 }
 
 public static class Time
