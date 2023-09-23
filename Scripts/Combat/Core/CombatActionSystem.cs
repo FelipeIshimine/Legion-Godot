@@ -10,7 +10,7 @@ namespace Legion.Combat.Core;
 
 public partial class CombatActionSystem : GameSystem
 {
-	public static event Action<CombatActionSystem> OnExecutionTreeUpdate; 
+	public event Action<CombatActionSystem> OnTreeUpdate; 
 	
 	[Export] private Dictionary<CombatAction, CombatAction> executionTree = new Dictionary<CombatAction, CombatAction>();
 
@@ -35,7 +35,7 @@ public partial class CombatActionSystem : GameSystem
 			GD.Print($"Sequence Start {combatAction}");
 		}
 		executionTree.Add(combatAction,parent);
-		OnExecutionTreeUpdate?.Invoke(this);
+		OnTreeUpdate?.Invoke(this);
 		
 		token = CancellationTokenSource.CreateLinkedTokenSource(token, cts.Token).Token;
 		bool canPerform = await Prepare(combatAction, token);
@@ -46,7 +46,7 @@ public partial class CombatActionSystem : GameSystem
 		}
 		
 		executionTree.Remove(combatAction);
-		OnExecutionTreeUpdate?.Invoke(this);
+		OnTreeUpdate?.Invoke(this);
 
 		if (parent == null)
 		{

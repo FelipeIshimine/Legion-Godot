@@ -1,71 +1,117 @@
-using Godot;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Godot;
+using Legion.Combat.Core;
+
+namespace Legion.Debug.Combat;
 
 public partial class CombatActionGraph : Control
 {
-	private readonly Dictionary<string, SimpleGraphNode> idToNode = new Dictionary<string, SimpleGraphNode>();
+	private readonly Dictionary<string, ActionGraphNode> idToNode = new Dictionary<string, ActionGraphNode>();
 	private readonly Dictionary<string, List<string>> parentToChildren = new Dictionary<string, List<string>>();
 	private readonly Dictionary<string, string> childToParent = new Dictionary<string, string>();
 
-
 	[Export] public bool AutoCenterOnSelected = true;
-	[Export] public float AutoCenterSpeed = 100;
+	[Export] public float AutoCenterSpeed = 8;
 	
+	private CombatActionSystem combatActionSystem;
 	[Export] private Button btn;
 	[Export] private Button removeBtn;
 	[Export] private GraphEdit graphEdit;
 	[Export] private PackedScene nodeScn;
-	[Export] private ConnectBtn connectBtn;
+	[Export] private ConnectNodesBtn connectBtn;
 	[Export] private Vector2 nodesSeparation;
-	private HashSet<string> roots;
 
-	private List<SimpleGraphNode> nodes = new List<SimpleGraphNode>();
+	private HashSet<string> roots = new HashSet<string>();
+	private List<ActionGraphNode> nodes = new List<ActionGraphNode>();
 
 	public GraphNode SelectedNode { get; private set; }
 
-	public List<SimpleGraphNode> Nodes => nodes;
+	public List<ActionGraphNode> Nodes => nodes;
 
 	public override async void _Ready()
 	{
 		base._Ready();
 		btn.ButtonUp += WhenButtonUp;
 		removeBtn.ButtonUp += RemoveNode;
+		connectBtn.OnConnectionRequest += ConnectionRequested;
+		
+		graphEdit.DisconnectionRequest += WhenDisconnectionRequested;
+		graphEdit.ConnectionRequest += WhenConnectionRequested;
 		graphEdit.NodeSelected += SelectNode;
 		graphEdit.NodeDeselected += DeselectNode;
 
-		graphEdit.DisconnectionRequest += WhenDisconnectionRequested;
-		graphEdit.ConnectionRequest += WhenConnectionRequested;
-		connectBtn.OnConnectionRequest += ConnectionRequested;
 		
+		return;
 		RandomNumberGenerator rng = new RandomNumberGenerator();
 		rng.Seed = 0;
 		for (int i = 0; i < 128; i++)
 		{
-			string newNodeName, parent;
-			do
-			{
-				newNodeName = rng.Randi().ToString();
-			} while (idToNode.ContainsKey(newNodeName));
-
-			var node = GetOrCreateNode(newNodeName);
-			
-			if (Nodes.Count > 1)
-			{
-				do
-				{
-					parent = Nodes[rng.RandiRange(0, Nodes.Count - 1)].Name;
-				} while (parent == newNodeName);
-				Add(parent,newNodeName);
-			}
-
-			RefreshPositions();
-			graphEdit.SetSelected(node);
+			CreateRandomNode();
 			//graphEdit.ScrollOffset = node.PositionOffset - GetScreenHaftSize();
 			await Task.Delay(1000);
 		}
+	}
 
+	public void Initialize(CombatActionSystem system)
+	{
+		if (combatActionSystem != null)
+		{
+			combatActionSystem.OnTreeUpdate -= UpdateTree;
+		}
+		combatActionSystem = system;
+		if (combatActionSystem != null)
+		{
+			combatActionSystem.OnTreeUpdate += UpdateTree;
+		}		
+	}
+	
+	public void UpdateTree(CombatActionSystem combatActionSystem)
+	{
+		Clear();
+		foreach (var pair in combatActionSystem.ExecutionTree)
+		{
+			if (pair.Value != null)
+			{
+				Add(CreateId(pair.Key),CreateId(pair.Value));
+			}
+			else
+			{
+				GetOrCreateNode(CreateId(pair.Key));
+			}
+		}
+	}
+
+
+	private static string CreateId(CombatAction combatAction)
+	{
+		GD.Print($"||||||||||||||||||||||||||||||||| {combatAction.DisplayName}");
+		return $"{combatAction.GetInstanceId()}:{combatAction.DisplayName}";
+	}
+
+	private void CreateRandomNode()
+	{
+		RandomNumberGenerator rng = new RandomNumberGenerator();
+		string newNodeName, parent;
+		do
+		{
+			newNodeName = rng.Randi().ToString();
+		} while (idToNode.ContainsKey(newNodeName));
+
+		var node = GetOrCreateNode(newNodeName);
+
+		if (Nodes.Count > 1)
+		{
+			do
+			{
+				parent = Nodes[rng.RandiRange(0, Nodes.Count - 1)].Name;
+			} while (parent == newNodeName);
+
+			Add(parent, newNodeName);
+		}
+
+		RefreshPositions();
+		graphEdit.SetSelected(node);
 	}
 
 	public override void _Process(double delta)
@@ -93,7 +139,7 @@ public partial class CombatActionGraph : Control
 	{
 		graphEdit.ClearConnections();
 
-		var nodes = new List<SimpleGraphNode>(idToNode.Values);
+		var nodes = new List<ActionGraphNode>(idToNode.Values);
 
 		foreach (var node in nodes)
 		{
@@ -135,12 +181,14 @@ public partial class CombatActionGraph : Control
 		}
 	}
 
+	
 	public void Add(string from, string to)
 	{
-		GD.Print($"From:{from} To:{to}");
-		SimpleGraphNode fromNode = GetOrCreateNode(from);
+		GD.Print($">>>>>>>>> From:{from} To:{to}");
+		
+		ActionGraphNode fromNode = GetOrCreateNode(from);
 		fromNode.Title  = fromNode.Name = from;
-		SimpleGraphNode toNode = GetOrCreateNode(to);
+		ActionGraphNode toNode = GetOrCreateNode(to);
 		toNode.Title  = toNode.Name = to;
 
 		graphEdit.ConnectNode(from, 0, to, 0);
@@ -192,7 +240,7 @@ public partial class CombatActionGraph : Control
 		}
 	}
 
-	private void RemoveNode(SimpleGraphNode node)
+	private void RemoveNode(ActionGraphNode node)
 	{
 		Nodes.Remove(node);
 		node.QueueFree();
@@ -212,11 +260,13 @@ public partial class CombatActionGraph : Control
 		node.PositionOffset = GetScreenHaftSize();
 	}
 
-	private Vector2I GetScreenHaftSize() => GetTree().Root.Size / 2;
+	private Vector2I GetScreenHaftSize() => (Vector2I)(Size / 2);
 
-	private SimpleGraphNode CreateNode()
+	private ActionGraphNode CreateNode()
 	{
-		var node = nodeScn.Instantiate() as SimpleGraphNode;
+		GD.Print(nodeScn);
+		var node = (ActionGraphNode)nodeScn.Instantiate();
+		GD.Print(node);
 		graphEdit.AddChild(node);
 		Nodes.Add(node);
 		return node;
@@ -232,12 +282,16 @@ public partial class CombatActionGraph : Control
 		graphEdit.ConnectNode(from, (int)fromPort, to, (int)toPort);
 	}
 
-	private SimpleGraphNode GetOrCreateNode(string nodeName)
+	private ActionGraphNode GetOrCreateNode(string nodeName)
 	{
 		if (!idToNode.TryGetValue(nodeName, out var value))
 		{
 			idToNode[nodeName] = value = CreateNode();
+
+			var split = nodeName.Split(":");
 			value.Name = nodeName;
+			value.SetSource(split[0]);
+			value.Title = split[1];
 		}
 		return value;
 	}
@@ -261,7 +315,7 @@ public partial class CombatActionGraph : Control
 				{
 					nodesForNext.AddRange(children);
 				}
-				size = new Vector2(Mathf.Max(size.X, node.PositionOffset.X-offset.X), Mathf.Max(size.Y, node.PositionOffset.Y-offset.Y));
+				size = new Vector2(Mathf.Max(size.X, node.PositionOffset.X -offset.X), Mathf.Max(size.Y, node.PositionOffset.Y -offset.Y));
 			}
 
 			if (nodesForNext.Count > 0)
@@ -295,14 +349,14 @@ public partial class CombatActionGraph : Control
 			{
 				depth = Mathf.Max(depth, GetDepth(child));
 			}
-			return 1+depth;
+			return 1 +depth;
 		}
 		return 1;
 	}
 
 	private void CalculateRoots()
 	{
-		roots = new HashSet<string>();
+		roots.Clear();
 		foreach (var pair in childToParent)
 		{
 			if (!childToParent.ContainsKey(pair.Value))

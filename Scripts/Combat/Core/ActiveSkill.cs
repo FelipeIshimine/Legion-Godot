@@ -9,6 +9,7 @@ namespace Legion.Combat.Core;
 
 public abstract partial class ActiveSkill : CombatSkill
 {
+	
 	public abstract void FindSettings();
 	public abstract CombatAction CreateAction(CharacterUnit characterUnit,
 	                                          CombatSystemsContainer combatSystemsContainer,
@@ -34,6 +35,8 @@ public abstract partial class ActiveSkill<T> : ActiveSkill where T : CombatActio
 		combatAction.Targets = targets;
 		return combatAction;
 	}
+
+
 	protected abstract T OnCreateAction();
 }
 

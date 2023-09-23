@@ -19,30 +19,38 @@ public partial class CombatFlow : GameStates.GameFlowState<CombatFlow, CombatFlo
 		OnFlow(CancellationToken cancellationToken)
 	{
 		//LoadScene
-		var combatScene = ResourceLoader.Load<PackedScene>(GameScenes.Instance.Combat).Instantiate();
+		var scenePack = ResourceLoader.Load<PackedScene>(GameScenes.Instance.Combat);
+
+		GD.Print($"scenePack.CanInstantiate():{scenePack.CanInstantiate()}");
+
+		var packed = ResourceLoader.Load<PackedScene>(GameScenes.Instance.Combat);
+
+		var combatScene = packed.Instantiate();
+		
 		Root.AddChild(combatScene);
 		
 		List<Character.CharacterUnit> allies = new List<Character.CharacterUnit>();
 		List<Character.CharacterUnit> enemies = new List<Character.CharacterUnit>();
 
-		var packedScene = ResourceLoader.Load<PackedScene>(dummyCharacterPath);
+		var characterPack = ResourceLoader.Load<PackedScene>(dummyCharacterPath);
 
-		GD.Print($"Packed scene is null: {(packedScene ==null)}    {packedScene.ResourceName} {packedScene.ResourcePath} CanInstantiate:{packedScene.CanInstantiate()}");
+		GD.Print($"Packed scene is null: {(characterPack ==null)}    {characterPack.ResourceName} {characterPack.ResourcePath} CanInstantiate:{characterPack.CanInstantiate()}");
 
 		for (int i = 0; i < 4; i++)
 		{
-			allies.Add(packedScene.Instantiate<CharacterUnit>());
-			enemies.Add(packedScene.Instantiate<CharacterUnit>());
+			allies.Add(characterPack.Instantiate<CharacterUnit>());
+			enemies.Add(characterPack.Instantiate<CharacterUnit>());
 		}
 		
 		CombatConfiguration combatConfiguration = new CombatConfiguration(allies.ToArray(),enemies.ToArray());
 		
+	
 		await combatScene.FindNode<CombatSystemsContainer>().CombatFlow(combatConfiguration,cancellationToken);
 
 		//ReleaseScene
 		Root.RemoveChild(combatScene);
 		combatScene.QueueFree();
-
+		
 		return Result.Win;
 	}
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c5be8i3ca6suv"]
+[gd_scene load_steps=9 format=3 uid="uid://c5be8i3ca6suv"]
 
 [ext_resource type="Script" path="res://Scripts/Combat/CombatSystemsContainer.cs" id="2_fq03y"]
 [ext_resource type="Script" path="res://Scripts/Combat/Formation/FormationSystem.cs" id="3_2gviq"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://Scripts/Combat/Core/CombatActionSystem.cs" id="5_1uvyx"]
 [ext_resource type="PackedScene" uid="uid://dc4a1jrigcn5a" path="res://Prefabs/Combat/FormationTile.tscn" id="5_kue7i"]
 [ext_resource type="Script" path="res://Scripts/Combat/Turn/TurnsSystem.cs" id="6_hjon6"]
+[ext_resource type="Script" path="res://Scripts/Debug/Combat/DebugCombat.cs" id="7_sc5cm"]
+[ext_resource type="PackedScene" uid="uid://d16uyh5p4s3pc" path="res://Prefabs/Combat/Debug/action_graph.tscn" id="7_xsvsc"]
 
 [node name="Combat" type="Node3D"]
 
@@ -59,7 +61,6 @@ Coordinate = Vector2i(1, 1)
 
 [node name="CombatActionSytem" type="Node" parent="CombatSystemsContainer"]
 script = ExtResource("5_1uvyx")
-executionTree = null
 
 [node name="TurnSystem" type="Node" parent="CombatSystemsContainer"]
 script = ExtResource("6_hjon6")
@@ -70,3 +71,14 @@ fov = 45.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 2.24127, 6.78101)
+
+[node name="Debug" type="Node" parent="." node_paths=PackedStringArray("graph", "actionSystem")]
+script = ExtResource("7_sc5cm")
+graph = NodePath("ActionsGraphUI")
+actionSystem = NodePath("../CombatSystemsContainer/CombatActionSytem")
+
+[node name="ActionsGraphUI" parent="Debug" instance=ExtResource("7_xsvsc")]
+visible = false
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 0.5

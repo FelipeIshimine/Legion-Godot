@@ -21,19 +21,33 @@ GdTaskPlayerLoopAutoload="*res://addons/GDTask/Autoload/GDTaskPlayerLoopAutoload
 DataManager="res://Scripts/Data/DataManager.cs"
 GameFlowMachine="*res://Scripts/GameStates/GameFlowMachine.cs"
 
+[display]
+
+window/size/always_on_top=true
+
 [dotnet]
 
 project/assembly_name="Legion"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/QuickPluginManager/plugin.cfg", "res://addons/scenesdropdownplugin/plugin.cfg")
+enabled=PackedStringArray("res://addons/QuickPluginManager/plugin.cfg", "res://addons/quickreloadproject/plugin.cfg", "res://addons/scenesdropdownplugin/plugin.cfg")
 
 [input]
 
 Space={
 "deadzone": 0.5,
 "events": []
+}
+"Open Debug"={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194340,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
+}
+ToggleNodeSlots={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194341,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
 }
 
 [rendering]

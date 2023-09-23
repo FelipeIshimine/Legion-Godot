@@ -3,15 +3,15 @@
 [ext_resource type="Script" path="res://Scripts/Combat/CombatSkills/SwapSkill.cs" id="1_8o011"]
 [ext_resource type="Script" path="res://Scripts/Combat/CombatActions/SwapCombatActionSettings.cs" id="2_lkd32"]
 
-[sub_resource type="Curve" id="Curve_blfdi"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.463158), 0.0, 0.0, 0, 0]
+[sub_resource type="Curve" id="Curve_1r5ko"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Resource" id="Resource_apcjk"]
+[sub_resource type="Resource" id="Resource_qfin2"]
 script = ExtResource("2_lkd32")
 Speed = 10.0
-Curve = SubResource("Curve_blfdi")
+Curve = SubResource("Curve_1r5ko")
 
-[node name="SwapSkill" type="Node"]
+[node name="Swap" type="Node"]
 script = ExtResource("1_8o011")
-SkillSettings = SubResource("Resource_apcjk")
+SkillSettings = SubResource("Resource_qfin2")

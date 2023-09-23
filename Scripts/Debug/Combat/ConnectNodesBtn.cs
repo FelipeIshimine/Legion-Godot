@@ -1,7 +1,9 @@
-using Godot;
 using System;
+using Godot;
 
-public partial class ConnectBtn : HBoxContainer
+namespace Legion.Debug.Combat;
+
+public partial class ConnectNodesBtn : HBoxContainer
 {
 	public event Action<string, string> OnConnectionRequest;
 	[Export] private LineEdit fromTxt;

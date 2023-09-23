@@ -76,7 +76,6 @@ public partial class scenesdropdownplugin : EditorPlugin
 			var editorInterface = GetEditorInterface();
 			
 			var openScenes = editorInterface.GetOpenScenes();
-
 			
 			var targetScene = $"res://{scenePaths[(int)index]}";
 			targetScene = targetScene.Replace("\\","/");

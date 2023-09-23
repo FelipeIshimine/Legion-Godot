@@ -4,8 +4,7 @@ namespace Legion.Combat.Core;
 
 public partial class CombatSkill : Node
 {
-	public string DisplayName;
-	
-	
+	[Export] private string displayName;
+	public string DisplayName => string.IsNullOrEmpty(displayName) ? Name : displayName;
 }
 

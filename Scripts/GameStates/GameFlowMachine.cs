@@ -38,7 +38,7 @@ public partial class GameFlowMachine : Node
 
 	protected async GDTask Flow(CancellationToken cancellationToken)
     {
-        Debug.Print("Flow.Start");
+        GD.Print("Flow.Start");
         
     MainMenu:
         var menuResult = await MainMenuFlow(cancellationToken);
@@ -66,7 +66,7 @@ public partial class GameFlowMachine : Node
         
     Quit:
         
-        Debug.Print("Flow.End");
+        GD.Print("Flow.End");
         GetTree().Quit();
     }
 

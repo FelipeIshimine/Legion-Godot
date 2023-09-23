@@ -1,0 +1,105 @@
+[gd_scene load_steps=4 format=3 uid="uid://d16uyh5p4s3pc"]
+
+[ext_resource type="Script" path="res://Scripts/Debug/Combat/CombatActionGraph.cs" id="1_f57m2"]
+[ext_resource type="PackedScene" uid="uid://cpsv1xycf2uyv" path="res://Prefabs/Combat/Debug/action_graph_node.tscn" id="2_4hxsi"]
+[ext_resource type="Script" path="res://Scripts/Debug/Combat/ConnectNodesBtn.cs" id="3_0xxp1"]
+
+[node name="ActionsGraphUI" type="Control" node_paths=PackedStringArray("btn", "removeBtn", "graphEdit", "connectBtn")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f57m2")
+btn = NodePath("VBoxContainer/Top Bar/New Button")
+removeBtn = NodePath("VBoxContainer/Top Bar/Delete Button")
+graphEdit = NodePath("VBoxContainer/GraphEdit")
+nodeScn = ExtResource("2_4hxsi")
+connectBtn = NodePath("VBoxContainer/Top Bar/Connect Btn")
+nodesSeparation = Vector2(200, 100)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Top Bar" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="New Button" type="Button" parent="VBoxContainer/Top Bar"]
+custom_minimum_size = Vector2(80, 40)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Top Bar/New Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "NEW"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Delete Button" type="Button" parent="VBoxContainer/Top Bar"]
+custom_minimum_size = Vector2(80, 40)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Top Bar/Delete Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "DELETE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Connect Btn" type="HBoxContainer" parent="VBoxContainer/Top Bar" node_paths=PackedStringArray("fromTxt", "toTxt", "btn")]
+layout_mode = 2
+script = ExtResource("3_0xxp1")
+fromTxt = NodePath("From Container/LineEdit")
+toTxt = NodePath("To Container/LineEdit")
+btn = NodePath("Create Pair")
+
+[node name="Create Pair" type="Button" parent="VBoxContainer/Top Bar/Connect Btn"]
+custom_minimum_size = Vector2(80, 40)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Top Bar/Connect Btn/Create Pair"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Connect"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="From Container" type="VBoxContainer" parent="VBoxContainer/Top Bar/Connect Btn"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Top Bar/Connect Btn/From Container"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "From"
+
+[node name="To Container" type="VBoxContainer" parent="VBoxContainer/Top Bar/Connect Btn"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Top Bar/Connect Btn/To Container"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "To"
+
+[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+minimap_enabled = false
