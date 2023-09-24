@@ -52,7 +52,7 @@ public partial class scenesdropdownplugin : EditorPlugin
 		List<string> scenePaths = new List<string>();
 
 		// Get a list of all files in the directory
-		string[] files = Directory.GetFiles(directory);
+		string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
 
 		foreach (string file in files)
 		{

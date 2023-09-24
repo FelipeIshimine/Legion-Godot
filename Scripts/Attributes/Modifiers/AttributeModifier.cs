@@ -16,9 +16,9 @@ public abstract partial class AttributeModifier : Resource
 	[System.Serializable]
 	public abstract partial class MainAttributeModifier : BaseAttributeModifier, IComparer<MainAttributeModifier>, IComparable<MainAttributeModifier>
 	{
-		[Export] protected MainAttribute mainAttribute;
-		public MainAttribute Main => mainAttribute;
-		public override BaseAttribute Attribute => mainAttribute;
+		[Export] protected PrimaryAttribute PrimaryAttribute;
+		public PrimaryAttribute Primary => PrimaryAttribute;
+		public override BaseAttribute Attribute => PrimaryAttribute;
 
 		public int Compare(MainAttributeModifier x, MainAttributeModifier y) 
 		{
@@ -37,9 +37,9 @@ public abstract partial class AttributeModifier : Resource
 		[Export] private int value;
 		public override int Process(int oldValue) => oldValue + this.value;
 		
-		public MainAttributeModifierFlat(MainAttribute attribute, int value)
+		public MainAttributeModifierFlat(PrimaryAttribute attribute, int value)
 		{
-			mainAttribute = attribute;
+			PrimaryAttribute = attribute;
 			this.value = value;
 		}
 	}
@@ -50,9 +50,9 @@ public abstract partial class AttributeModifier : Resource
 		public float Percentage = 1;
 		public override int Process(int oldValue) => Mathf.RoundToInt(oldValue * Percentage);	
 		
-		public MainAttributeModifierPercent(MainAttribute attribute, int percentage)
+		public MainAttributeModifierPercent(PrimaryAttribute attribute, int percentage)
 		{
-			mainAttribute = attribute;
+			PrimaryAttribute = attribute;
 			this.Percentage = percentage;
 		}
 	}

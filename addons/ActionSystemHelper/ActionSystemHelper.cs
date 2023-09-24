@@ -4,7 +4,6 @@ using System;
 using System.Diagnostics;
 using Legion.Combat.Core;
 
-[Tool]
 public partial class ActionSystemHelper : EditorPlugin
 {
 	public override void _EnterTree()

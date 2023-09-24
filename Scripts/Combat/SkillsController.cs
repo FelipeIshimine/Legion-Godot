@@ -1,13 +1,14 @@
-using Godot;
-using System;
 using System.Collections.Generic;
+using Godot;
 using Legion.Combat.Core;
+
+namespace Legion.Combat;
 
 [GlobalClass]
 public partial class SkillsController : Node
 {
-	[Export] public ActiveSkill[] ActiveSkills { get; private set; }
-	[Export] public PassiveSkill[] PassiveSkill { get; private set; }
+	[ExportCategory("Debug")] public ActiveSkill[] ActiveSkills { get; private set; }
+	[ExportCategory("Debug")] public PassiveSkill[] PassiveSkill { get; private set; }
 	
 	public override void _Ready()
 	{

@@ -40,7 +40,6 @@ public abstract partial class ActiveSkill<T> : ActiveSkill where T : CombatActio
 	protected abstract T OnCreateAction();
 }
 
-[Tool]
 public abstract partial class ActiveSkill<T,TB> : ActiveSkill<T> where T : CombatAction<T,TB>, new() where TB : SkillSettings, new()
 {
 	public abstract TB SkillSettings { get; set; }

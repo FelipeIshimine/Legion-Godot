@@ -1,9 +1,0 @@
-[gd_resource type="Resource" load_steps=3 format=3 uid="uid://c64tpo22xmogm"]
-
-[ext_resource type="Texture2D" uid="uid://cgx0vkslvehyc" path="res://2D/Sprites/Icons/Attributes/Main/Strength.png" id="1_0kes5"]
-[ext_resource type="Script" path="res://Scripts/Attributes/MainAttributes/Strength.cs" id="1_m5r4w"]
-
-[resource]
-script = ExtResource("1_m5r4w")
-Icon = ExtResource("1_0kes5")
-Description = ""

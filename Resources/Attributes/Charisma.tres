@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="Charisma" load_steps=3 format=3 uid="uid://cp7fuvu11463"]
-
-[ext_resource type="Texture2D" uid="uid://b4xnw3vlsnh8t" path="res://2D/Sprites/Icons/Attributes/Main/Charisma.png" id="1_brcgo"]
-[ext_resource type="Script" path="res://Scripts/Attributes/MainAttributes/Charisma.cs" id="1_qj4jh"]
-
-[resource]
-script = ExtResource("1_qj4jh")
-Icon = ExtResource("1_brcgo")
-Description = ""

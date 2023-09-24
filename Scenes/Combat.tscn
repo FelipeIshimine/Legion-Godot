@@ -26,15 +26,23 @@ tiles = [NodePath("(0, 0)"), NodePath("(0, 0)2"), NodePath("(0, 0)3"), NodePath(
 
 [node name="(0, 0)" parent="CombatSystemsContainer/FormationSystem/Left Formation" instance=ExtResource("5_kue7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1)
+WorldCoordinate = Vector3i(0, 0, 0)
+Unit = null
 
 [node name="(0, 0)2" parent="CombatSystemsContainer/FormationSystem/Left Formation" instance=ExtResource("5_kue7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+WorldCoordinate = Vector3i(0, 0, 0)
+Unit = null
 
 [node name="(0, 0)3" parent="CombatSystemsContainer/FormationSystem/Left Formation" instance=ExtResource("5_kue7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 1)
+WorldCoordinate = Vector3i(0, 0, 0)
+Unit = null
 
 [node name="(0, 0)4" parent="CombatSystemsContainer/FormationSystem/Left Formation" instance=ExtResource("5_kue7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -1)
+WorldCoordinate = Vector3i(0, 0, 0)
+Unit = null
 
 [node name="Right Formation" type="Node3D" parent="CombatSystemsContainer/FormationSystem" node_paths=PackedStringArray("tiles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
@@ -43,18 +51,27 @@ tiles = [NodePath("(0, 0)"), NodePath("(0, 0)2"), NodePath("(0, 0)3"), NodePath(
 
 [node name="(0, 0)" parent="CombatSystemsContainer/FormationSystem/Right Formation" instance=ExtResource("5_kue7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1)
+WorldCoordinate = Vector3i(0, 0, 0)
+Unit = null
 
 [node name="(0, 0)2" parent="CombatSystemsContainer/FormationSystem/Right Formation" instance=ExtResource("5_kue7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+WorldCoordinate = Vector3i(0, 0, 0)
+Unit = null
 
 [node name="(0, 0)3" parent="CombatSystemsContainer/FormationSystem/Right Formation" instance=ExtResource("5_kue7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 1)
+WorldCoordinate = Vector3i(0, 0, 0)
+Unit = null
 
 [node name="(0, 0)4" parent="CombatSystemsContainer/FormationSystem/Right Formation" instance=ExtResource("5_kue7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1)
+WorldCoordinate = Vector3i(0, 0, 0)
+Unit = null
 
 [node name="CombatActionSytem" type="Node" parent="CombatSystemsContainer"]
 script = ExtResource("5_1uvyx")
+executionTree = null
 
 [node name="TurnSystem" type="Node" parent="CombatSystemsContainer"]
 script = ExtResource("6_hjon6")

@@ -8,7 +8,7 @@ namespace Legion.Character;
 public partial class CharacterUnit : Node3D
 {
 	[Export] private Sprite3D sprite;
-	[Export] public SkillsController Skills { get; set; }
+	[Export] public Combat.SkillsController Skills { get; set; }
 	[Export] public UnitController Controller { get; set; }
 	[Export] public AttributesNode Attributes { get; set; }
 
@@ -19,7 +19,11 @@ public partial class CharacterUnit : Node3D
 	public Vector3I WorldCoordinate => Tile.WorldCoordinate;
 	public int CurrentHealth { get; set; }
 
-	public void Flip() => sprite.FlipH = !sprite.FlipH;
+	public void Flip()
+	{
+		GD.Print($"SPRITE IS NULL:{sprite == null}");
+		sprite.FlipH = !sprite.FlipH;
+	}
 
 	public void SetTile(FormationTile formationTile)
 	{

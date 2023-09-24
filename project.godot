@@ -32,7 +32,7 @@ project/assembly_name="Legion"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/QuickPluginManager/plugin.cfg", "res://addons/attributesautomationplugin/plugin.cfg", "res://addons/quickreloadproject/plugin.cfg", "res://addons/scenesdropdownplugin/plugin.cfg")
+enabled=PackedStringArray("res://addons/QuickPluginManager/plugin.cfg")
 
 [input]
 

@@ -1,25 +1,23 @@
 using System.Collections.Generic;
 using Godot;
-using Legion.Attributes.Derived;
 using Legion.Character;
 using Legion.Combat.Formation;
+using Legion.Combat.Targeting.Validation;
 
 namespace Legion.Combat;
 
 public partial class TargetFilter : Node
 {
-	[Export] public TargetValidator[] Include = new TargetValidator[1] { new All() };
+	[Export] public BaseTargetValidator[] Include = new BaseTargetValidator[1] { new AnythingValidator() };
 
-	[Export] public TargetValidator[] Exclude = new TargetValidator[0];
-	[Export] public TargetSorter[] Sorters = new TargetSorter[0];
+	[Export] public BaseTargetValidator[] Exclude = new BaseTargetValidator[0];
+	[Export] public Targeting.Sorting.TargetSorter[] Sorters = new Targeting.Sorting.TargetSorter[0];
 
-	public TargetFilter()
+	public TargetFilter() { }
+
+	public TargetFilter(BaseTargetValidator defaultInclude)
 	{
-	}
-
-	public TargetFilter(TargetValidator defaultInclude)
-	{
-		Include = new TargetValidator[1] { defaultInclude };
+		Include = new BaseTargetValidator[1] { defaultInclude };
 	}
 	public bool TryProcess(CharacterUnit unit, List<FormationTile> worldCoordinates, out List<FormationTile> results)
 	{
@@ -68,7 +66,7 @@ public partial class TargetFilter : Node
 
 		int Sorter(FormationTile x, FormationTile y)
 		{
-			foreach (TargetSorter comparer in Sorters) 
+			foreach (Targeting.Sorting.TargetSorter comparer in Sorters) 
 			{
 				int comparison = comparer.Compare(unit, x, y);        
 				if (comparison != 0) {

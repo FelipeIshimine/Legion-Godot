@@ -12,25 +12,40 @@ using Legion.Attributes;
 [Tool]
 public partial class attributesautomationplugin : EditorPlugin
 {
-	private string path = "Resources/Attributes";
+	private string mainAttributesPath = "res://Resources/Attributes/Main";
+	private string derivedAttributesPath = "res://Resources/Attributes/Derived";
 	private string singletonPath = "res://Scenes/Singletons/AttributesTypes.tscn";
 	private readonly List<Resource> attributes = new List<Resource>();
 	public override void _EnterTree()
 	{
 		attributes.Clear();
 		
-		//var attributePaths = FindAttributes(path);
-
 		GD.Print("_EnterTree");
 
-		Type baseClassType = typeof(BaseAttribute);
+		CreateFromBaseClass(typeof(PrimaryAttribute), mainAttributesPath);
+		CreateFromBaseClass(typeof(DerivedAttribute), derivedAttributesPath);
 
+	}
+
+	private void CreateFromBaseClass(Type baseClass, string path)
+	{
+		var subclassesOfBaseAttribute = GetSubclasses(baseClass);
+		foreach (var subclassType in subclassesOfBaseAttribute)
+		{
+			//GD.Print("Class inheriting from BaseAttribute: " + subclassType.FullName);
+			var filePath = $"{path}/{subclassType.Name}.tres";
+			attributes.Add(FindOrCreateResourceOf(subclassType, filePath));
+		}
+	}
+
+	private static List<Type> GetSubclasses(Type baseClassType)
+	{
 		// Get all loaded assemblies in the current AppDomain.
 		Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
 		// Create a list to store the found classes.
 		var subclassesOfBaseAttribute = new System.Collections.Generic.List<Type>();
-		
+
 		foreach (var assembly in assemblies)
 		foreach (Type type in assembly.GetTypes())
 		{
@@ -39,25 +54,12 @@ public partial class attributesautomationplugin : EditorPlugin
 				subclassesOfBaseAttribute.Add(type);
 			}
 		}
-		
-		// Print or use the list of found classes.
-		foreach (var subclassType in subclassesOfBaseAttribute)
-		{
-			//GD.Print("Class inheriting from BaseAttribute: " + subclassType.FullName);
-			attributes.Add(FindOrCreateResourceOf(subclassType));
-		}
 
-		var scene = ResourceLoader.Load<PackedScene>(singletonPath);
-		var instance = scene.Instantiate<AttributeTypes>();
-		instance.attributes = attributes.ToArray();
-		scene.Pack(instance);
-		ResourceSaver.Save(scene,singletonPath);
-		instance.Free();
+		return subclassesOfBaseAttribute;
 	}
 
-	private Resource FindOrCreateResourceOf(Type type)
+	private Resource FindOrCreateResourceOf(Type type, string filePath)
 	{
-		var filePath = $"res://{path}/{type.Name}.tres";
 		if (!ResourceLoader.Exists(filePath))
 		{
 			if (Activator.CreateInstance(type) is Resource nResource)

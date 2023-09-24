@@ -3,7 +3,7 @@ using Godot;
 
 namespace Legion.Attributes;
 
-[Tool]
+[GlobalClass]
 public abstract partial class BaseAttribute : Resource
 {
 	[Export] public Texture2D Icon { get; set; }
@@ -12,5 +12,7 @@ public abstract partial class BaseAttribute : Resource
 	public abstract int Calculate(Dictionary<int, int> dictionary);
 
 	public static implicit operator int(BaseAttribute attribute) => attribute.Key;
-	
+
+	public abstract void Initialize();
+
 }

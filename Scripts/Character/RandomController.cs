@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Fractural.Tasks;
 using Godot;
@@ -15,6 +16,16 @@ public partial class RandomController : UnitController
 	{
 		RandomNumberGenerator rng = new RandomNumberGenerator();
 		var combatActionSystem = combatContainer.GetSystem<CombatActionSystem>();
+
+		
+		GD.Print(unit);
+		GD.Print(unit.Skills);
+		GD.Print(unit.Skills.ActiveSkills);
+		if (unit.Skills.ActiveSkills.Length == 0)
+		{
+			throw new Exception("no skills found");
+		}
+		
 		ActiveSkill skill = unit.Skills.ActiveSkills[rng.RandiRange(0, unit.Skills.ActiveSkills.Length - 1)];
 
 		var targets = new List<Vector3I>(skill.FilterTargets(combatContainer));

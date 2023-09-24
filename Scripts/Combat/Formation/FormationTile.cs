@@ -3,14 +3,14 @@ using Legion.Character;
 
 namespace Legion.Combat.Formation;
 
-[GlobalClass,Tool]
+[GlobalClass]
 public partial class FormationTile : Node3D
 {
 	private Vector2I coordinate;
 	[Export] public Vector2I LocalCoordinate
 	{
 		get => coordinate;
-		private set
+		set
 		{
 			coordinate = value;
 			Name = coordinate.ToString();

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="HealthAttribute" load_steps=2 format=3 uid="uid://brfrquq6tm78m"]
+
+[ext_resource type="Script" path="res://Scripts/Attributes/Derived/HealthAttribute.cs" id="1_4cxi8"]
+
+[resource]
+script = ExtResource("1_4cxi8")
+baseValue = 0
+Description = ""

@@ -1,9 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c1lvdk8nyxkpk"]
-
-[ext_resource type="Script" path="res://Scripts/Attributes/Derived/MaxHealth.cs" id="1_ybuuv"]
-
-[resource]
-script = ExtResource("1_ybuuv")
-baseValue = 0
-sourceAttributes = []
-Description = ""

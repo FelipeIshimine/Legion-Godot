@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="Constitution" load_steps=3 format=3 uid="uid://dnur6ssj0ulbw"]
-
-[ext_resource type="Script" path="res://Scripts/Attributes/MainAttributes/Constitution.cs" id="1_bs3u1"]
-[ext_resource type="Texture2D" uid="uid://l8wd5okcfeod" path="res://2D/Sprites/Icons/Attributes/Main/Constitution.png" id="1_d3llc"]
-
-[resource]
-script = ExtResource("1_bs3u1")
-Icon = ExtResource("1_d3llc")
-Description = ""
